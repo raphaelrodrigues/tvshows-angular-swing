@@ -23,8 +23,15 @@
 <script src="<c:url value="/resources/js/filters.js" />"></script>
 <script src="<c:url value="/resources/js/app.js" />"></script>
 
+
+
 <title>TvShows</title>
 
+<style rel="stylesheet" type="text/css">
+body {
+	height: 200%;
+}
+</style>
 </head>
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container">
@@ -36,6 +43,7 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
+
 			<div class="navbar-brand navbar-brand-centered">TvShows</div>
 		</div>
 
@@ -44,10 +52,22 @@
 			<ul class="nav navbar-nav">
 				<li><a href="reddit">Reddit</a></li>
 				<li><a href="/tvshows">TvShows</a></li>
-				<li><a href="#">Link</a></li>
+				<li><a href="tables">Filters</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="#">Link</a></li>
+				<li>
+					<div ng-controller="TestCtrl">
+
+						<form id="form" role="form">
+
+							<div class="form-group move-down">
+								<input type="text" id="Autocomplete" class="form-control"
+									ng-autocomplete="result1" details="details1" options="options1" />
+							</div>
+
+						</form>
+					</div>
+				</li>
 				<li><a href="#">Link</a></li>
 				<li><a href="#">Link</a></li>
 			</ul>
@@ -57,42 +77,48 @@
 	<!-- /.container-fluid -->
 </nav>
 <body>
-
-
-<h3><center>${tvshow} </center></h3>
-<div ng-controller="TvShowsDetailsCtrl">
-
-	<a href="#" class="btn btn-primary" ng-click="addEps()">Spoil Me</a>
-	<div class="container" id="tourpackages-carousel">
-		
-		{{someModel}}
-		<div class="row">
-		
-				<div class="col-xs-18 col-sm-6 col-md-3"  ng-repeat="episode in episodesAPI  | filter:query | orderBy:orderProp ">
-					<div class="thumbnail">
-						<img src="{{episode.screen}}" alt="">
-						<div class="caption">
-							<h4>
-								 {{episode.title | cut:true:10:"..."}}
-							</h4>
-							<p> {{episode.overview  | cut:true:20:"..." }}</p>
-								
-								<a href="<c:url value='#'/>" class="btn btn-info btn-xs"
-									role="button">Rating: {{episode.classification}}</a>
-							</p>
-						</div>
-					</div>
-				</div>
+	<table class="table table-striped">
+		<tr>
+			<th ng-click="orderBy('firstName')"><msg key="firstName"></msg>
+				<i ng-class="orderIcon('firstName')"></i></th>
+			<th ng-click="orderBy('lastName')"><msg key="lastName"></msg> <i
+				ng-class="orderIcon('lastName')"></i></th>
+			<th><msg key="delete"></msg></th>
+		</tr>
+		<tr ng-repeat="person in persons|orderBy:order">
+			<td>{{person.firstName}}</td>
+			<td>{{person.lastName}}</td>
+			<td><a ng-click="delete(person)"><i class="icon-trash"></i></a></td>
+		</tr>
+	</table>
+	<form>
+		<fieldset>
+			<legend>
+				<msg key="newPerson"></msg>
+			</legend>
+			<label> <msg key="firstName"></msg>
+			</label> <input type="text" ng-model="person.firstName" /> <label> <msg
+					key="lastName"></msg>
+			</label> <input type="text" ng-model="person.lastName" /> <label></label>
+			<button type="submit" class="btn" ng-click="save()">
+				<msg key="save"></msg>
+			</button>
+		</fieldset>
+	</form>
+	${players}
+	<div class="row">
+		<div class="col-lg-offset-2 col-sm-4 col-md-4">
+			<ul id="sourceList" dnd-between-list="source,targetList">
+				<li class="alert alert-error nomargin alert-warning"
+					ng-repeat="item in source">{{item.value}}</li>
+			</ul>
 		</div>
-		<!-- End row -->
-		<div id="mydiv">
-		    <center><img src="https://www.delasocial.com/swarovski/facebook/swarovski_wedding_app/design_images/ajax-loader.gif" class="ajax-loader"/>
-			</center>
+		<div class="col-sm-4 col-md-4">
+			<ul id="targetList" dnd-between-list="model,sourceList">
+				<li class="alert alert-info nomargin" ng-repeat="item in model">{{item.value}}</li>
+			</ul>
 		</div>
-</div>
-
-</div>
-
+	</div>
 
 </body>
 </html>

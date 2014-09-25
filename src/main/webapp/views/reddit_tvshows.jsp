@@ -25,6 +25,11 @@
 
 <title>TvShows</title>
 
+<style rel="stylesheet" type="text/css">
+body {
+	height: 200%;
+}
+</style>
 </head>
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container">
@@ -57,42 +62,46 @@
 	<!-- /.container-fluid -->
 </nav>
 <body>
+	${reddit_tvshow}
 
+	<div ng-app='myApp' ng-controller='RedditController'>
+		Search: <input ng-model="query"> Sort by: <select
+			ng-model="orderProp">
+			<option value="title">Alphabetical</option>
+			<option value="-score">Score</option>
+		</select>
 
-<h3><center>${tvshow} </center></h3>
-<div ng-controller="TvShowsDetailsCtrl">
+		<div class="container" id="tourpackages-carousel">
+			<div class="row">
+				<div infinite-scroll='reddit.nextPage()'
+					infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='1'>
+					<div class="col-xs-18 col-sm-6 col-md-3"
+						ng-repeat='item in reddit.items | filter:query | orderBy:orderProp'>
+						<div class="thumbnail">
+							<div class="caption">
+								<h4>
+								<a ng-href='{{item.url}}' target='_blank'>{{item.title}}</a>
+									
+								</h4>
+								<p>
+									Score: <span class='score'>{{item.score}}</span>
+								</p>
+								<p>
 
-	<a href="#" class="btn btn-primary" ng-click="addEps()">Spoil Me</a>
-	<div class="container" id="tourpackages-carousel">
-		
-		{{someModel}}
-		<div class="row">
-		
-				<div class="col-xs-18 col-sm-6 col-md-3"  ng-repeat="episode in episodesAPI  | filter:query | orderBy:orderProp ">
-					<div class="thumbnail">
-						<img src="{{episode.screen}}" alt="">
-						<div class="caption">
-							<h4>
-								 {{episode.title | cut:true:10:"..."}}
-							</h4>
-							<p> {{episode.overview  | cut:true:20:"..." }}</p>
-								
-								<a href="<c:url value='#'/>" class="btn btn-info btn-xs"
-									role="button">Rating: {{episode.classification}}</a>
-							</p>
+									<a ng-href='http://reddit.com{{item.permalink}}'
+										target='_blank'
+										class="btn btn-info btn-xs" role="button">
+										{{item.num_comments}} comments</a> <small>by {{item.author}} -
+										
+									</small>
+								<div style='clear: both;'></div>
+							</div>
 						</div>
 					</div>
 				</div>
+			</div>
+			<div ng-show='reddit.busy'>Loading data...</div>
 		</div>
-		<!-- End row -->
-		<div id="mydiv">
-		    <center><img src="https://www.delasocial.com/swarovski/facebook/swarovski_wedding_app/design_images/ajax-loader.gif" class="ajax-loader"/>
-			</center>
-		</div>
-</div>
-
-</div>
-
-
+	</div>
 </body>
 </html>

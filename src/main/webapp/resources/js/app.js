@@ -1,1 +1,1 @@
-angular.module('MyApp', ['controllers', 'services'])
+angular.module('MyApp', ['ngResource','ngAutocomplete','infinite-scroll','directives','controllers', 'services','filters'])
